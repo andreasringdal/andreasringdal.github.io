@@ -13,7 +13,7 @@ Canvas2
 var width = 320;
 var height = 0;
 var streaming = false;
-
+    var ctx = canvas.getContext('2d');
 navigator.mediaDevices.getUserMedia({video: true, audio: false})
         .then(function (stream) {
             video.srcObject = stream;
@@ -43,6 +43,15 @@ function clearphoto() {
   context.rotate(90 * Math.PI / 180);
   context.fillStyle = "#AAA";
     context.fillRect(0, 0, canvas.width, canvas.height);
+}
+  
+  function updateCanvas() {
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.translate(canvas.width * 0.5, canvas.height * 0.5);
+    ctx.rotate(90 * Math.PI / 180);
+    //ctx.scale(zoom, zoom);
+    ctx.translate(-canvas.width * 0.5, -canvas.height * 0.5);
 }
 //https://stackoverflow.com/questions/18475262/how-to-zoom-and-rotate-webcam-video-which-is-streamed-by-html5-getusermedia-api
 
