@@ -1,61 +1,77 @@
-<html><body>
-<div class="camera"><video id="video">Video stream not available.</video></div>
-<br/>Canvas6
-  <br/>
-<canvas id="canvas"></canvas>
-<script type="text/javascript">
-  var width = 320;
-  var height = 0;
-  var streaming = false;
-  var canvas = document.getElementById("canvas");
-  var ctx = canvas.getContext('2d');
-  navigator.mediaDevices.getUserMedia({video: true, audio: false})
-        .then(function (stream) {
-            video.srcObject = stream;
-            video.play();
-        })
-        .catch(function (err) {
-            console.log("An error occured! " + err);
+<!DOCTYPE HTML>
+<html>
+  <head>
+  </head>
+  <body>
+    <video id="myVideo" width = "250" height="200"></video>
+    <canvas id="myCanvas" width="250" height="200"></canvas>
+    <script src="../plugins/jquery/jquery-1.11.1.js"></script>
+    <script>
+
+        $(document).ready(function(){
+            var video = $('#myVideo');
+            var canvas = $('#myCanvas').get(0);
+            var context = canvas.getContext('2d');
+
+            context.translate(canvas.width / 2, canvas.height / 2);
+            context.rotate(Math.PI / 2);
+            context.translate(canvas.width / -2, canvas.height / -2);
+            webcam_setup();
+            video.hide();
+
+
         });
 
-video.addEventListener('canplay', function (ev) {
-    if (!streaming) {
-        height = video.videoHeight / (video.videoWidth / width);
-        video.setAttribute('width', width);
-        video.setAttribute('height', height);
-        canvas.setAttribute('width', width);
-        canvas.setAttribute('height', height);
-        streaming = true;
-    }
-}, false);
+        // Listen for orientation change
+        $(window).resize(function() {
+            // Announce new orientation number - Comes back undefined
+            // console.log(window.orientation);
+        });
 
-clearphoto();
+        function DrawToCanvas(video, context) {
+            //context.rotate(Math.PI/2);
+            context.drawImage(video,0,0, 250, 200);
 
-function clearphoto() {
-    var context = canvas.getContext('2d');
-    context.setTransform(1, 0, 0, 1, 0, 0);  
-    context.rotate(90 * Math.PI / 180);
-    context.fillStyle = "#AAA";
-    context.fillRect(0, 0, canvas.width, canvas.height);
-}
-  
-  function updateCanvas() {
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.translate(canvas.width * 0.5, canvas.height * 0.5);
-    ctx.rotate(90 * Math.PI / 180);
-    //ctx.scale(zoom, zoom);
-    ctx.translate(-canvas.width * 0.5, -canvas.height * 0.5);
-}
-//https://stackoverflow.com/questions/18475262/how-to-zoom-and-rotate-webcam-video-which-is-streamed-by-html5-getusermedia-api
+            setTimeout(DrawToCanvas, 35, video, context);
+        };
 
-  function rotatecam(){
-//  var c = document.getElementById("canvas");
-//var ctx = c.getContext("2d");
-ctx.rotate(20 * Math.PI / 180);
-ctx.fillRect(50, 20, 100, 50);
-  }
-</script>
-  
-</body>
-</html>
+        function webcam_setup() {
+            navigator.myGetMedia = ( 
+                navigator.getUserMedia || 
+                navigator.webkitGetUserMedia ||
+                navigator.mozGetUserMedia ||
+                navigator.msGetUserMedia);
+
+            navigator.myGetMedia({video: true}, webcam_connect, webcam_error);
+        };
+
+        function webcam_connect(stream) {
+            var video = $('#myVideo').get(0);
+            var canvas = $('#myCanvas').get(0);
+            var context = canvas.getContext('2d');
+
+            video.src = window.URL ? window.URL.createObjectURL(stream) : stream;
+            video.play();
+            waitForStream(video, context);
+        };
+
+        function waitForStream(video, context) {
+            if (video.readyState < 4) {
+                console.log("wait");
+                setTimeout(waitForStream, 2000, video, context);
+            }
+            else {
+                console.log("done waiting");
+                DrawToCanvas(video, context);
+            };
+
+            return false;
+        };
+
+        function webcam_error(e) { console.log(e); };
+
+
+
+    </script>
+  </body>
+</html>     
