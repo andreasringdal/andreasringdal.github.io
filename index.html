@@ -6,7 +6,7 @@
     <video id="video">Video stream not available.</video>
 </div>
 <br/>
-Canvas3
+Canvas4
 <br/>
 <canvas id="canvas"></canvas>
 <script type="text/javascript">
@@ -39,9 +39,9 @@ clearphoto();
 
 function clearphoto() {
     var context = canvas.getContext('2d');
-      context.setTransform(1, 0, 0, 1, 0, 0);  
-  context.rotate(90 * Math.PI / 180);
-  context.fillStyle = "#AAA";
+    context.setTransform(1, 0, 0, 1, 0, 0);  
+    context.rotate(90 * Math.PI / 180);
+    context.fillStyle = "#AAA";
     context.fillRect(0, 0, canvas.width, canvas.height);
 }
   
@@ -55,6 +55,12 @@ function clearphoto() {
 }
 //https://stackoverflow.com/questions/18475262/how-to-zoom-and-rotate-webcam-video-which-is-streamed-by-html5-getusermedia-api
 
+  function rotatecam(){
+  var c = document.getElementById("canvas");
+var ctx = c.getContext("2d");
+ctx.rotate(20 * Math.PI / 180);
+ctx.fillRect(50, 20, 100, 50);
+  }
 </script>
   
 </body>
