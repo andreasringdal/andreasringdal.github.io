@@ -1,20 +1,15 @@
-<html>
-<body>
-
+<html><body>
+<div class="camera"><video id="video">Video stream not available.</video></div>
+<br/>Canvas6
   <br/>
-<div class="camera">
-    <video id="video">Video stream not available.</video>
-</div>
-<br/>
-Canvas4
-<br/>
 <canvas id="canvas"></canvas>
 <script type="text/javascript">
-var width = 320;
-var height = 0;
-var streaming = false;
-    var ctx = canvas.getContext('2d');
-navigator.mediaDevices.getUserMedia({video: true, audio: false})
+  var width = 320;
+  var height = 0;
+  var streaming = false;
+  var canvas = document.getElementById("canvas");
+  var ctx = canvas.getContext('2d');
+  navigator.mediaDevices.getUserMedia({video: true, audio: false})
         .then(function (stream) {
             video.srcObject = stream;
             video.play();
@@ -30,7 +25,6 @@ video.addEventListener('canplay', function (ev) {
         video.setAttribute('height', height);
         canvas.setAttribute('width', width);
         canvas.setAttribute('height', height);
-
         streaming = true;
     }
 }, false);
@@ -56,8 +50,8 @@ function clearphoto() {
 //https://stackoverflow.com/questions/18475262/how-to-zoom-and-rotate-webcam-video-which-is-streamed-by-html5-getusermedia-api
 
   function rotatecam(){
-  var c = document.getElementById("canvas");
-var ctx = c.getContext("2d");
+//  var c = document.getElementById("canvas");
+//var ctx = c.getContext("2d");
 ctx.rotate(20 * Math.PI / 180);
 ctx.fillRect(50, 20, 100, 50);
   }
