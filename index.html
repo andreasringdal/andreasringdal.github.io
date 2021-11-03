@@ -39,10 +39,12 @@ clearphoto();
 
 function clearphoto() {
     var context = canvas.getContext('2d');
-    context.fillStyle = "#AAA";
+      context.setTransform(1, 0, 0, 1, 0, 0);  
+  context.rotate(90 * Math.PI / 180);
+  context.fillStyle = "#AAA";
     context.fillRect(0, 0, canvas.width, canvas.height);
 }
-
+//https://stackoverflow.com/questions/18475262/how-to-zoom-and-rotate-webcam-video-which-is-streamed-by-html5-getusermedia-api
 
 </script>
   
