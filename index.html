@@ -23,8 +23,6 @@
             context.translate(canvas.width / -2, canvas.height / -2);
             webcam_setup();
             video.hide();
-
-
         });
 
         // Listen for orientation change
@@ -36,7 +34,6 @@
         function DrawToCanvas(video, context) {
             //context.rotate(Math.PI/2);
             context.drawImage(video,0,0, 250, 200);
-
             setTimeout(DrawToCanvas, 35, video, context);
         };
 
@@ -46,7 +43,6 @@
                 navigator.webkitGetUserMedia ||
                 navigator.mozGetUserMedia ||
                 navigator.msGetUserMedia);
-
             navigator.myGetMedia({video: true}, webcam_connect, webcam_error);
         };
 
@@ -55,8 +51,18 @@
             var canvas = $('#myCanvas').get(0);
             var context = canvas.getContext('2d');
 
-            video.src = window.URL ? window.URL.createObjectURL(stream) : stream;
+            navigator.mediaDevices.getUserMedia({video: true, audio: false})
+        .then(function (stream) {
+            video.srcObject = stream;
             video.play();
+        })
+          
+        .catch(function (err) {
+            console.log("An error occured! " + err);
+        });
+          
+            //video.src = window.URL ? window.URL.createObjectURL(stream) : stream;
+            //video.play();
             waitForStream(video, context);
         };
 
