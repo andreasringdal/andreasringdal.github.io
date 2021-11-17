@@ -1,88 +1,77 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-  <head>
-  </head>
-  <body>
-    <video id="myVideo" width = "250" height="200"></video>
-    <canvas id="myCanvas" width="250" height="200"></canvas>
-    <!--script src="../plugins/jquery/jquery-1.11.1.js"></script-->
-<script
-  src="https://code.jquery.com/jquery-1.12.4.js"
-  integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
-  crossorigin="anonymous"></script>
-  
+<head>
+    <meta charset="utf-8">
+    <title>Display Webcam Stream</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            background-color: black;
+        }
+        video {
+            position: absolute;
+            transform: rotate(90deg);
+            transform-origin: bottom left;
+            width: 100vh;
+            height: 100vw;
+            margin-top: -100vw;
+            object-fit: cover;
+            z-index: 4;
+            visibility: visible;
+        }
+        #container {
+            margin: 0px auto;
+            width: 640px;
+            height: 480px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="container">
+        <video autoplay="true" id="videoElement" ></video>
+    </div>
     <script>
+        var video = document.querySelector("#videoElement");
+        var rotation = 90;
+        if (navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(function (stream) {
+                    video.srcObject = stream;
+                })
+                .catch(function (err0r) {
+                    console.log("Something went wrong!");
+                });
+        }
+        function rotate()
+        {
+            rotation += 90;
+            if (rotation >= 360)
+                rotation = 0;
+            setRotation(rotation);
+        }
+        function setRotation(degrees)
+        {         
+            video.style.transform = 'rotate(' + degrees + 'deg)';
+        }
+        function fullScreen()
+        {
+            var body = document.querySelector("#container");
+            body.requestFullscreen();
+        }
 
-        $(document).ready(function(){
-            var video = $('#myVideo');
-            var canvas = $('#myCanvas').get(0);
-            var context = canvas.getContext('2d');
-
-            context.translate(canvas.width / 2, canvas.height / 2);
-            context.rotate(Math.PI / 2);
-            context.translate(canvas.width / -2, canvas.height / -2);
-            webcam_setup();
-            video.hide();
-        });
-
-        // Listen for orientation change
-        $(window).resize(function() {
-            // Announce new orientation number - Comes back undefined
-            // console.log(window.orientation);
-        });
-
-        function DrawToCanvas(video, context) {
-            //context.rotate(Math.PI/2);
-            context.drawImage(video,0,0, 250, 200);
-            setTimeout(DrawToCanvas, 35, video, context);
+        document.onkeyup = function (event) {
+            switch (event.key)
+            {
+                case 'r':
+                    rotate();
+                    break;
+                case 'f':
+                    fullScreen();
+                    break;
+            }            
         };
-
-        function webcam_setup() {
-            navigator.myGetMedia = ( 
-                navigator.getUserMedia || 
-                navigator.webkitGetUserMedia ||
-                navigator.mozGetUserMedia ||
-                navigator.msGetUserMedia);
-            navigator.myGetMedia({video: true}, webcam_connect, webcam_error);
-        };
-
-        function webcam_connect(stream) {
-            var video = $('#myVideo').get(0);
-            var canvas = $('#myCanvas').get(0);
-            var context = canvas.getContext('2d');
-
-            navigator.mediaDevices.getUserMedia({video: true, audio: false})
-        .then(function (stream) {
-            video.srcObject = stream;
-            video.play();
-        })
-          
-        .catch(function (err) {
-            console.log("An error occured! " + err);
-        });
-          
-            //video.src = window.URL ? window.URL.createObjectURL(stream) : stream;
-            //video.play();
-            waitForStream(video, context);
-        };
-
-        function waitForStream(video, context) {
-            if (video.readyState < 4) {
-                console.log("wait");
-                setTimeout(waitForStream, 2000, video, context);
-            }
-            else {
-                console.log("done waiting");
-                DrawToCanvas(video, context);
-            };
-
-            return false;
-        };
-
-        function webcam_error(e) { console.log(e); };
-
-
 
     </script>
-  </body>
-</html>     
+</body>
+</html>
