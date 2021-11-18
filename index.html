@@ -7,6 +7,7 @@
         body {
             margin: 0;
             background-color: black;
+            overflow: hidden;
         }
         video {
             position: absolute;
@@ -21,8 +22,8 @@
         }
         #container {
             margin: 0px auto;
-            width: 640px;
-            height: 480px;
+            width: 1920px;
+            height: 1080px;
         }
 
     </style>
@@ -35,7 +36,7 @@
         var video = document.querySelector("#videoElement");
         var rotation = 90;
         if (navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: true })
+            navigator.mediaDevices.getUserMedia({ video: { width: { min: 1920 }, height: { min: 1080}} })
                 .then(function (stream) {
                     video.srcObject = stream;
                 })
