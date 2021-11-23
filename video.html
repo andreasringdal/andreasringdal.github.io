@@ -18,22 +18,49 @@
   height: 100%;
   pointer-events: none;
 }
-/*
-@media (min-aspect-ratio: 16/9) {
-  .video-foreground { height: 300%; top: -100%; }
-}
-@media (max-aspect-ratio: 16/9) {
-  .video-foreground { width: 300%; left: -100%; }
-}
-      */
+/*  @media (min-aspect-ratio: 16/9) {  .video-foreground { height: 300%; top: -100%; }}
+    @media (max-aspect-ratio: 16/9) {  .video-foreground { width: 300%; left: -100%; }}      */
 @media all and (max-width: 600px) {
-.vid-info { width: 50%; padding: .5rem; }
-.vid-info h1 { margin-bottom: .2rem; }
+    .vid-info { width: 50%; padding: .5rem; }
+    .vid-info h1 { margin-bottom: .2rem; }
 }
-@media all and (max-width: 500px) {
-.vid-info .acronym { display: none; }
-}
+@media all and (max-width: 500px) { .vid-info .acronym { display: none; } }
     </style>
+    <script type="text/javascript">
+
+ var token = "";
+      
+function updatePage()
+{
+    console.log("update now");
+}      
+function checkToken()
+{
+  var url = "https://andreasringdal.github.io/update";
+  fetch(url).then(function(response) {
+    if (token == "" && response != "")
+    {
+      token = response;
+    }
+    else if(token != response)
+    {
+      token = response;
+      updatePage();      
+    }
+    }).catch(function() {
+      console.log("Booo");
+    });
+
+  setTimeout(checkToken, 1000*120);
+}
+
+
+      
+checkToken();
+
+      
+      
+    </script>
   </head>
   <body>
      <div class="video-background">
