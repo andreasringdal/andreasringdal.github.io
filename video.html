@@ -36,11 +36,15 @@ function updatePage()
 }      
 function checkToken()
 {
+  console.log("Checking token");
   var url = "https://andreasringdal.github.io/update";
   fetch(url).then(function(response) {
+    console.log("got response");
+    console.log(response);
     if (token == "" && response != "")
     {
       token = response;
+      console.log("Setting response to blank token");
     }
     else if(token != response)
     {
@@ -50,8 +54,8 @@ function checkToken()
     }).catch(function() {
       console.log("Booo");
     });
-
-  setTimeout(checkToken, 1000*120);
+  console.log("Setting timeout");
+  setTimeout(checkToken, 1000*30);
 }
 
 
