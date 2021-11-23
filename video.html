@@ -41,17 +41,25 @@ function checkToken()
   fetch(url).then(function(response) {
     console.log("got response");
     console.log(response);
-    if (token == "" && response != "")
+    
+    })
+    .then(function(data){
+    console.log("data");
+    console.log(data);
+  if (token == "" && data != "")
     {
-      token = response;
-      console.log("Setting response to blank token");
+      token = data;
+      console.log("Setting data to blank token");
     }
     else if(token != response)
     {
       token = response;
       updatePage();      
     }
-    }).catch(function() {
+  
+  })
+    
+    .catch(function() {
       console.log("Booo");
     });
   console.log("Setting timeout");
