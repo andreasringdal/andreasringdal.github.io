@@ -38,15 +38,16 @@ function checkToken()
 {
   console.log("Checking token");
   var url = "https://andreasringdal.github.io/update";
-  fetch(url).then(function(response) {
-    console.log("got response");
+  
+  fetch(url)
+  .then(function(response) {
+    console.log("got response2");
     console.log(response);
-    
-    })
-    .then(function(data){
-    console.log("data");
-    console.log(data);
-  if (token == "" && data != "")
+    return response.text();
+  }).then(function(data) {
+    console.log("data");    
+    console.log(data); // this will be a string
+    if (token == "" && data != "")
     {
       token = data;
       console.log("Setting data to blank token");
@@ -55,11 +56,9 @@ function checkToken()
     {
       token = response;
       updatePage();      
-    }
-  
+    }  
   })
-    
-    .catch(function() {
+.catch(function() {
       console.log("Booo");
     });
   console.log("Setting timeout");
