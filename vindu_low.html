@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Vindu</title>
+    <style type="text/css">
+        body {
+            margin: 0;
+            background-color: black;
+            overflow: hidden;
+        }
+        video {
+            position: absolute;
+            transform: rotate(90deg);
+            transform-origin: bottom left;
+            width: 100vh;
+            height: 100vw;
+            margin-top: -100vw;
+            object-fit: cover;
+            z-index: 4;
+            visibility: visible;
+        }
+        #container {
+            margin: 0px auto;
+            width: 1920px;
+            height: 1080px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="container">
+        <video autoplay="true" id="videoElement" ></video>
+    </div>
+    <script>
+        var video = document.querySelector("#videoElement");
+        var rotation = 90;
+        if (navigator.mediaDevices.getUserMedia) {
+            navigator.mediaDevices.getUserMedia({ video: { width: { min: 1920 }, height: { min: 1080}} })
+                .then(function (stream) {
+                    video.srcObject = stream;
+                })
+                .catch(function (err0r) {
+                    console.log("Something went wrong!");
+                });
+        }
+        function rotate()
+        {
+            rotation += 90;
+            if (rotation >= 360)
+                rotation = 0;
+            setRotation(rotation);
+        }
+        function setRotation(degrees)
+        {         
+            video.style.transform = 'rotate(' + degrees + 'deg)';
+        }
+        function fullScreen()
+        {
+            var body = document.querySelector("#container");
+            body.requestFullscreen();
+        }
+
+        document.onkeyup = function (event) {
+            switch (event.key)
+            {
+                case 'r':
+                    rotate();
+                    break;
+                case 'f':
+                    fullScreen();
+                    break;
+            }            
+        };
+
+    </script>
+</body>
+</html>
