@@ -36,7 +36,7 @@
         var video = document.querySelector("#videoElement");
         var rotation = 90;
         if (navigator.mediaDevices.getUserMedia) {
-            navigator.mediaDevices.getUserMedia({ video: { width: { min: 1920 }, height: { min: 1080}} })
+            navigator.mediaDevices.getUserMedia({ video: { width: { min: 640 }, height: { min: 480}} })
                 .then(function (stream) {
                     video.srcObject = stream;
                 })
